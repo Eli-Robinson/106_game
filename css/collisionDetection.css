@@ -1,0 +1,77 @@
+/*
+	collisionDetection.css 
+*/
+
+/* -------------------------------------------------------------- */
+/* Fonts */
+
+/* find fonts that you like from https://www.google.com/fonts/ and include them here*/
+@import url(https://fonts.googleapis.com/css?family=Orbitron);
+@import url(https://fonts.googleapis.com/css?family=Special+Elite);
+
+/* -------------------------------------------------------------- */
+/* Framing Styles */
+
+body {
+    /* color */
+    color: #FF9F1C; 
+    background-color: #6C91C2;
+}
+
+a {
+    color: #FF9F1C;
+    text-decoration: none;
+}
+
+/* -------------------------------------------------------------- */
+/* Front Workaround -- Need to use fonts on the page to use on Canvas */
+
+#fontFix {
+    visibility: hidden;	   /* hide this section */
+}
+
+.font-Orbitron {
+    font-family: 'Orbitron', sans-serif; 
+}
+
+.font-Special-Elite {
+    font-family: 'Special Elite'; 
+}
+
+
+/* -------------------------------------------------------------- */
+/* Canvas Styles */
+
+#myCanvas {
+    border: 1px solid rgba(255,255,255,0.4);
+    margin-top:  40px;    
+}
+
+/* -------------------------------------------------------------- */
+/* Button Styles */
+
+#canvasControls {
+    text-align: center;
+}
+
+/* -------------------------------------------------------------- */
+/* Alignment Rules */
+
+.center-text {
+    text-align: center;
+}
+
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+
+
+
+
+
+

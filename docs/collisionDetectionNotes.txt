@@ -1,0 +1,296 @@
+collisionDetectionNotes.txt v 5.3 - 11.10.19
+
+---------------------------------------------------------------------------
+1.0  Collision Detection Project Folder
+---------------------------------------------------------------------------
+
+This is an example project folder for understanding collision detection.
+
+    collision-detection.html 
+    css/collision-detection.css 
+    js/collision-detection.js
+    collision-detection-notes.txt
+
+We will walk through how to detect collisions between objects.
+
+This example also uses: 
+- mouse event handlers to move objects - in the same way we have used them in our previous event examples to move a paddle.  In this case we move the paddle only left to right with in the boundaries of the canvas
+- has a circle moving on its own - in a similar way that we had our circles moving in the bounce example project.  In this case we have our circle simply "fall" from the top of the canvas and "fall off" the bottom of the canvas and then restart at the top of the canvas.
+
+2.0  Elements and Interaction
+---------------------------------------------------------------------------
+
+This example detects the collision between two objects: a circle and a paddle.
+
+To understand these objects let examine each of these objects definitions and behavior.
+
+2.1 The Circle
+---------------------------------------------------------------------------
+
+The circle starts at the top of the canvas and falls to the bottom; when it gets to the bottom it starts over at the top.  The top starting point is randomly set each time it starts. To accomplish we define our circle as:
+
+    Circle:   X, Y, Size, Color, Speed
+
+The circle has a specific starting size and starting color.
+
+    Size = 40;               
+    Color = "green";          
+
+The circle starts at a random position at the top of the canvas.  It does this by setting the circle Y value to 0; and generates a random number in the range of 0..canvasWidth for the circle X value.
+    
+    Y = 0;
+    X = ...;
+
+The circle then falls straight down.  It does this by changing the circle Y value by a positive move or "speed" value.  The circle X value is not changed. This speed is defined as:
+
+    Speed = 1;               
+    
+To support the circle we have all the expected methods:
+
+    drawCircle()
+    - standard canvas to draw a circle
+    
+    moveCircle()
+    - have the circle fall down
+        - increment the circle Y value by circle Speed; where Speed is + to fall down
+    - when the circle reaches the bottom start back at the top
+        - set circle Y back to the top (0)
+        - set circle X to a new random position between 0..Canvas Width
+    
+2.2 The Paddle
+---------------------------------------------------------------------------
+
+The paddle has a specific height and width and starts at the center of the bottom of the canvas.  The movement of the paddle is controlled by mouse movement.  To do this we define our paddle as:
+
+    paddle:   X, Y, Height, Width, Color, Speed
+
+The paddle has a specific height and width and color.  In this case our paddle is a rectangle that is wider than its height.
+
+    Height = 20;
+    Width = 60;
+    Color = "black";
+    
+The paddle starts at the center of the bottom of the canvas.  To do this we set X to the center of the canvas; and set Y to the bottom of the canvas:
+
+    X = ...;           
+    Y = ...;  
+    
+The paddle then moves based on a specific speed:
+
+    Speed = 10;                  
+    
+To support the paddle we have all the expected methods:
+
+    drawpaddle()
+    - standard canvas to draw a rectangle
+            
+    movepaddleMouse( mouseX, mouseY ) 
+
+    These mouse position X and Y are them used to change the paddlees position.  These movements are accomplished in the same manner of our events mouse example.  See that example for more details.
+
+    The movement also restricts the paddle to the dimensions of the canvas. These movements are accomplished in the same manner our events keyboard example.  See that example for more details.
+    
+    This is supported by setting up a 
+    - mouse event move listener: the mouse event listens for mousemove and calls a function that gets the X and Y offset position of the mouse. 
+    
+    mouse event move handler - capture the mouse X and Y position and calls the mousepaddleMove function
+    
+---------------------------------------------------------------------------
+3.0  Game Loop
+---------------------------------------------------------------------------
+
+With these definitions of our objects and their supporting methods for drawing and movement we put all this in a game loop.  
+
+The game loop is simple; it simply calls drawCanvas().
+    
+And with this, drawCanvas() then controls the order of actions for our animation.  We follow the same order we have been using:
+
+    1.  Clear the canvas
+
+    2.  Move the objects
+        - move the circle
+
+    3.  Draw our objects
+        - draw the paddle
+        - draw the circle
+        
+And now, to implement collision detection we simply include a collision detection function - that checks each object against every other object - in our loop.
+
+    4.  Check for collisions
+
+For this example there is no pre-setup needed before we get everything started by simply calling gameLoop().
+
+---------------------------------------------------------------------------
+4.0  Introduction to Collision Detection
+---------------------------------------------------------------------------
+
+The primary purpose of this example is to demonstrate collision detection.  Meaning that we will be checking if one object is occupying the same space as another object; or colliding with another object.  
+
+Note we have done boundary collision many times with our examples that have objects moving within the boundaries of the canvas and then changing their direction to keep moving within the boundaries of the canvas.
+
+In this example we will check if one object - the paddle - is colliding with another object - the circle.  Our two objects are:
+
+    paddle:      x, y, height, width
+    - x and y are defined as the top left corner of the paddle; and the size
+      of the paddle is then defined by its width and height from this top left
+      position.
+    
+    Circle:     x, y, size
+    - x and y are defined as the center of the circle; and the size is then 
+      defined by the radius from this center point. (radius is size/2)
+
+To detect collisions we need to determine when the volume of the paddle overlaps with the volume of the circle.
+
+How do you do this if the paddle is a rectangle and the circle is round?  Keep reading.
+    
+4.1 Bounding paddle - Collision Detection
+---------------------------------------------------------------------------
+
+A bounding paddle collision detection algorithm takes two objects and checks to see if the bounds of the first object are within the bounds of the second object. 
+
+This requires four checks, one for each edge of the bounding paddlees.
+
+For this we need X, Y, Height, Width for each object.  Where X and Y are the upper left hand corner of the bounding paddle.
+
+With this we then check each of the four boundaries:
+        
+        Boundary 1: object1 X < (object2 X + object2 Width)
+        
+        Boundary 2: (object1 X + object1 Width)  > object2 X
+        
+        Boundary 3: object1 Y < (object2 Y + object2 Height)
+    
+        Boundary 4: (object1 Y + object1 Height) > object2.y
+        
+If ALL four of these conditions are met - TRUE - then a collision has been detected!
+
+Now lets examine how to use this algorithm with our example.
+
+4.1.1 Bounding paddle - Collision Detection Example
+---------------------------------------------------------------------------
+
+In our example we have two objects:
+
+    paddle:      x, y, height, width
+
+    Circle:   x, y, radius
+
+For the bounding paddle collision detection algorithm we need the "bounding paddle" dimensions for each object. In other words we need the X, Y, Width, Height for each bounding paddle of the objects.
+
+For the paddle object, getting the "bounding paddle" is simple.  The object is a paddle, so its own definition is the "bounding paddle":
+
+        Object 1 is the paddle:
+        
+        object1 X  => paddle X
+        object1 Y  => paddle Y
+        object1 W  => paddle Width
+        object1 H  => paddle Height
+
+Our other object is a circle.  For our circle we have a X, Y, Radius.  How do we get a "bounding paddle" from a circle?  Simple, we put a paddle around the edges of our circle. To do this we need to define the "bounding paddle" values X, Y, Width, Height from the circles X, Y, Radius values.
+
+        Object 2 is the circle:
+        
+        object2 X  => circle X - circle Radius
+        object2 Y  => circel Y - circle Radius
+        object2 W  => circle Radius * 2
+        object2 H  => circle Radius * 2
+
+To simplify mapping each of your objects "bounding paddle" values into the algorithm, we setup individual variables and then map them to our objects:
+
+        //setup object1 dimensions
+        var object1X = ...;
+        var object1Y = ...;
+        var object1W = ...;
+        var object1H = ...;
+
+        //setup object2 dimensions
+        var object2X = ...;
+        var object2Y = ...;
+        var object2W = ...;
+        var object2H = ...;
+
+Now that we have all of the "bounding paddle" variables for each object we plug these variables into our four boundary area check algorithm to see if we have a collision.  
+
+        //check if object1 is in contact with object2
+        if (   object1X < object2X + object2W 
+            && object1X + object1W > object2X 
+            && object1Y < object2Y + object2H 
+            && object1Y + object1H > object2Y ) 
+        {
+            // collision detected
+            
+            // STOP
+            circle Speed = 0;  
+            circle Color = "red";
+            
+        } //if
+        else 
+        {
+            // no collision
+        
+            // GO
+            circle Speed = 1;  
+            circle Color = "green";
+            
+        } //else
+
+In our example if a collision is detected we STOP by:
+
+    (1) stop the circle from moving by changing its speed to 0
+    (2) change the circles color to red.
+
+And if there is not a collision the we GO by:
+
+    (1) get the circle moving by changing its speed to 1
+    (2) change the circles color to green
+
+See the checkCollision() function.
+
+---------------------------------------------------------------------------
+5.0 How To Use
+---------------------------------------------------------------------------
+
+To use this in your project you need to include the following:
+
+    1) modify the checkCollision() function to your project
+    
+        - modify the object1 and object2 to match your objects dimensions
+        
+        - modify the if statement to do what you want when 
+            - a collision is detected
+            - a collision is not detected
+            
+    2) call the checkCollision() function in your drawCanvas() function:
+    
+        1.  Clear the canvas
+
+        2.  Move the objects
+
+        3.  Draw our objects
+
+        4.  Check for collisions
+
+---------------------------------------------------------------------------
+6.0 Lab 10
+---------------------------------------------------------------------------
+
+In this assignment you will extend our Collision Detection Lab example project from class to:
+
+(a) use an array to have multiple circles; these circles should start at the top of the canvas and fall to the bottom of the canvas; when they reach the bottom of the canvas they should restart at a random position at the top of the canvas
+
+(b) modify the collision detection such that whenever any circle collides with the paddle that the circle disappears [ hint:  .splice() ]
+
+(c) something more
+
+Getting Started: 
+
+Download CollisionDetection.zip from Resources->Labs. [ Or make a copy of your finished Collision Detection Lab project from class and rename it Lab 10 ].
+    
+See the notes for a description of the apps behavior and suggested Work Steps.
+
+
+    
+    
+    
+    
+
