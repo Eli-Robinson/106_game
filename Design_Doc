@@ -76,35 +76,16 @@ drawHitMessage()
 - write	a	message	on	the	canvas when piece is hit
 
 4.0	 INTERACTIONS
-Ball	Movement – the	ball	starts	at	a	set	position	and	begins	to	move around	the
-canvas in	a	set	direction;	the	ball	bounces	off	the	top	and	side	walls;	the	ball	bounces
-off	the	top	and	sides	of	the	paddle;	the	ball	bounces	off	the	bricks;	the	ball
-disappears	when	it	goes	past the	bottom	wall	and	the	game	is	over.
-moveBall()
-- changes	ball X	and	Y	based	on move	X	and	Y
-- if		at	top,	left,	right	boundaries
-o change	direction
-- if	at	bottom
+Arrow movement - The arrows fall down the screen on their paths at a set constant speed.
+moveArrow()
+- Moves the arrows downs the screen towords where the player can interact with them.
 o set	gameON	=	FALSE
-Paddle	Movement – the	paddle	moves	left	and	right	across	the bottom	of	the
-canvas;	the	paddle	stays	within	the	boundaries	of	the	left	and	right	walls;	paddle
-moves	along	a	defined	point	on	the	Y-axis	and	moves	based	on	the	location	of	the	Y
-position	of	the	mouse.
+Interaction boxes - multiple locations on the bottom of the scree so that the player can press a key to hit the arrows as they fall. Each key defined in
+a seperate row and multiple layers of smaller boxes in order to hit different levels of scoring (good, great, excellent)
 Add	event	listener	for mouse	movement
-mouseMoveEvent()
-o set	paddle	X	to	mouse	X
-o if	paddle	is	at	left	or	right	boundary
-§ keep	the	paddle	within	the	left	or	right	boundary
-Ball	and	Paddle	Collision – when	the	ball	collides	with	the	top	or	sides	of	the
-paddle	the	ball	bounces	upward.
-collisionBallPaddle()
-- set	object	1	to	the	ball	(convert	the	ball	x,	y,	radius	to	x,	y,	h,	w)
-- set	object	2	to	the	Paddle	(using	paddle	x,	y,	h,	w)
-- if	ball	collides	with	paddle
-- bounce	the	ball	up
-change	ball	Y	to	negative
-Ball	and	Brick	Collision – when	the	ball	collides	with	the	bottom	or	side	of	a	brick
-the brick	disappears
+KeyEvent()
+-Checks location of pressed key  - key corresponds to different columns and when pressed checks the target locations in those columns.
+-if arrow falls in the target locations then grants a score corresponding with how close made it(good, great, excellent)
 collisionBallPaddle()
 - set	object	1	to	the	ball	(convert	the	ball	x,	y,	radius	to	x,	y,	h,	w)
 for	each	brick	in	the	bricks	array
