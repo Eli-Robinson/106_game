@@ -1,0 +1,166 @@
+COMP	106
+Final	Project
+Design	Document
+Connor Robinson, Eli Robinson
+1.0	 OVERVIEW
+For our project, we are creating an implementation for dance dance revolution, the classic arcade game.
+This game has arrows falling down from the top of the screen. When these arrows enter a specific zone on
+the bottom of the canvas, there is a prompt to click the key corresponding to the arrow. The goal of the
+game is to hit all of the arrows as they fall from the top of the screen. The game also has multiple hitboxes
+where the arrow is supposed to be hit, depending on how accurate the users input is. The game will display
+good, great, or excellent, depending on how accurate the users input is. The game will also display the percent of
+keys that have been hit. I miss counts as an arrow that goes through the users hitbox without being hit, or a user input
+that does not hit an arrow. We may also add some easter eggs to this project that we will not tell the professor about,
+as to suprise him, depending on time.
+
+2.0	 SKETCH
+The sketch is included in the github file, or is attached to the submission
+3.0	 COMPONENTS
+Walls – the	walls	are	the	4	sides	of	the	canvas.
+canvasWidth
+canvasHeight
+canvasColor
+Left Arrow: an arrow that moves down the screen, once it is in its hitbox, it can be interacted with by using keyboard
+inputs.
+
+Left Arrow:
+x
+y (constant)
+color (constant)
+speed (constant)
+next x
+next	y
+drawLArrow()
+- creates an arrow at the top of the screen in the correct position
+
+Right Arrow:
+x
+y (constant)
+color (constant)
+speed (constant)
+next x
+next	y
+drawRArrow()
+- creates an arrow at the top of the screen in the correct position
+
+Up Arrow:
+x
+y (constant)
+color (constant)
+speed (constant)
+next x
+next	y
+drawUArrow()
+- creates an arrow at the top of the screen in the correct position
+
+Down Arrow:
+x
+y (constant)
+color (constant)
+speed (constant)
+next x
+next	y
+drawDArrow()
+- creates an arrow at the top of the screen in the correct position
+Hitbox - an empty rectangle at the bottom of the screen that is the width of the screen. If the keyboard inputs are
+pressed and the corresponding arrow is in the hitbox, it deletes the arrow and increases the count of hit arrows
+There may be multiple hitboxes of nested sizes to account for different accuracies.
+Hitbox:
+y	=	constant	value
+height = constant
+createHitbox()
+- draw a	rectangle	using y value, height
+
+HitMessage	– the	message	that displays when a key is hit (good, great, excellent)
+drawHitMessage()
+- write	a	message	on	the	canvas when piece is hit
+
+4.0	 INTERACTIONS
+Ball	Movement – the	ball	starts	at	a	set	position	and	begins	to	move around	the
+canvas in	a	set	direction;	the	ball	bounces	off	the	top	and	side	walls;	the	ball	bounces
+off	the	top	and	sides	of	the	paddle;	the	ball	bounces	off	the	bricks;	the	ball
+disappears	when	it	goes	past the	bottom	wall	and	the	game	is	over.
+moveBall()
+- changes	ball X	and	Y	based	on move	X	and	Y
+- if		at	top,	left,	right	boundaries
+o change	direction
+- if	at	bottom
+o set	gameON	=	FALSE
+Paddle	Movement – the	paddle	moves	left	and	right	across	the bottom	of	the
+canvas;	the	paddle	stays	within	the	boundaries	of	the	left	and	right	walls;	paddle
+moves	along	a	defined	point	on	the	Y-axis	and	moves	based	on	the	location	of	the	Y
+position	of	the	mouse.
+Add	event	listener	for mouse	movement
+mouseMoveEvent()
+o set	paddle	X	to	mouse	X
+o if	paddle	is	at	left	or	right	boundary
+§ keep	the	paddle	within	the	left	or	right	boundary
+Ball	and	Paddle	Collision – when	the	ball	collides	with	the	top	or	sides	of	the
+paddle	the	ball	bounces	upward.
+collisionBallPaddle()
+- set	object	1	to	the	ball	(convert	the	ball	x,	y,	radius	to	x,	y,	h,	w)
+- set	object	2	to	the	Paddle	(using	paddle	x,	y,	h,	w)
+- if	ball	collides	with	paddle
+- bounce	the	ball	up
+change	ball	Y	to	negative
+Ball	and	Brick	Collision – when	the	ball	collides	with	the	bottom	or	side	of	a	brick
+the brick	disappears
+collisionBallPaddle()
+- set	object	1	to	the	ball	(convert	the	ball	x,	y,	radius	to	x,	y,	h,	w)
+for	each	brick	in	the	bricks	array
+if		(the	brick	hit	has	not	been	hit)
+- set	object	2	to	brick[i]	(using	brick[i]	x,	y,	h,	w)
+if	ball collides	with	brick[i]
+change	brick[i]	color	to	HitColor
+change	direction	of	ball	(bounce	down)
+5.0	 GAME CONTROL ALGORITHM
+drawCanvas()
+1.		clear	the	canvas
+2.		draw	stuff
+draw	the	paddle
+draw	the	ball
+draw	the	bricks
+3.		move	stuff
+move	the ball
+4.		check	for	collisions
+check	for	collision	between	ball	and	paddle
+check	for	collision	between	ball	and	bricks
+gameLoop()
+request	animation	frame
+if	( gameOver ==	true )
+drawGameOver()
+else
+drawCanvas()
+6.0	 BUILD	STEPS
+Will	build	things in	this	order:
+Paddle –
+- define	the	paddle
+- draw	the	paddle
+- get	it	to	move	based	on	restrictions
+Ball –
+- define	the	ball
+- draw	the	ball
+- get	the	ball	to	move
+- get	the	ball	to	bounce	off	all	the	sides	of	the	canvas
+- get	the	ball	to	fall	off	the	bottom	of	the	canvas
+Paddle	and	Ball	collision –
+- get	the	ball	to	bounce	off	the	paddle
+Draw	the	bricks –
+- define	a	row	of	bricks
+- draw	a	row	of	bricks
+- extend	to	multiple	rows	of	bricks
+Ball	and	Brick	Collision –
+- get	the	ball	to	recognize	a	collision	with	a	brick
+- get	a	brick	to	disappear	when	a	collision	occurs
+Clear	Button –
+- setup	the	clear	button	to	reset	the	ball,	paddle,	and	bricks	to	the
+starting	positions
+Start	Button –
+- setup	the	start	button	to	start	the	ball	moving
+Game	Over –
+- setup	a	game	over	Boolean	variable;	set	game	over	to	false	when	the
+ball	falls	off	the	bottom	of	the	canvas
+- develop	a	game	over	function	that	draws	a	game	over	message	on	the
+canvas
+- modify	the	game	loop	to	only	call	draw	canvas	when	the	game	over
+Boolean	is	true
