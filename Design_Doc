@@ -82,29 +82,22 @@ moveArrow()
 o set	gameON	=	FALSE
 Interaction boxes - multiple locations on the bottom of the scree so that the player can press a key to hit the arrows as they fall. Each key defined in
 a seperate row and multiple layers of smaller boxes in order to hit different levels of scoring (good, great, excellent)
-Add	event	listener	for mouse	movement
+
 KeyEvent()
 -Checks location of pressed key  - key corresponds to different columns and when pressed checks the target locations in those columns.
 -if arrow falls in the target locations then grants a score corresponding with how close made it(good, great, excellent)
-collisionBallPaddle()
-- set	object	1	to	the	ball	(convert	the	ball	x,	y,	radius	to	x,	y,	h,	w)
-for	each	brick	in	the	bricks	array
-if		(the	brick	hit	has	not	been	hit)
-- set	object	2	to	brick[i]	(using	brick[i]	x,	y,	h,	w)
-if	ball collides	with	brick[i]
-change	brick[i]	color	to	HitColor
-change	direction	of	ball	(bounce	down)
+
 5.0	 GAME CONTROL ALGORITHM
 drawCanvas()
 1.		clear	the	canvas
 2.		draw	stuff
-draw	the	paddle
-draw	the	ball
-draw	the	bricks
+draw	arrows
+draw	background
+draw	words to screen if necessary
 3.		move	stuff
-move	the ball
+move	the arrows
 4.		check	for	collisions
-check	for	collision	between	ball	and	paddle
+when key is pressed, check corresponding hitbox to see if arrows are present and display correct information
 check	for	collision	between	ball	and	bricks
 gameLoop()
 request	animation	frame
