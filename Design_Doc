@@ -107,34 +107,16 @@ else
 drawCanvas()
 6.0	 BUILD	STEPS
 Will	build	things in	this	order:
-Paddle –
-- define	the	paddle
-- draw	the	paddle
-- get	it	to	move	based	on	restrictions
-Ball –
-- define	the	ball
-- draw	the	ball
-- get	the	ball	to	move
-- get	the	ball	to	bounce	off	all	the	sides	of	the	canvas
-- get	the	ball	to	fall	off	the	bottom	of	the	canvas
-Paddle	and	Ball	collision –
-- get	the	ball	to	bounce	off	the	paddle
-Draw	the	bricks –
-- define	a	row	of	bricks
-- draw	a	row	of	bricks
-- extend	to	multiple	rows	of	bricks
-Ball	and	Brick	Collision –
-- get	the	ball	to	recognize	a	collision	with	a	brick
-- get	a	brick	to	disappear	when	a	collision	occurs
-Clear	Button –
-- setup	the	clear	button	to	reset	the	ball,	paddle,	and	bricks	to	the
-starting	positions
-Start	Button –
-- setup	the	start	button	to	start	the	ball	moving
-Game	Over –
-- setup	a	game	over	Boolean	variable;	set	game	over	to	false	when	the
-ball	falls	off	the	bottom	of	the	canvas
-- develop	a	game	over	function	that	draws	a	game	over	message	on	the
-canvas
-- modify	the	game	loop	to	only	call	draw	canvas	when	the	game	over
-Boolean	is	true
+Rows
+-four collision detection rows with multiple boxes to effect how the collision occurs.
+Arrows-
+Create arrows that fall from the top of the screen. Their direction signifies the position of which column they will be put into.
+arrows dissapear when they fall off the the screen
+when the coreect key is pressed and the arrow lies in the collision box at the bottom of the screen the arrow will become larger then dissapepar
+game over screen -
+before game starts game over screen and click to play. Could also show high scores
+click to set game over to flase and start canvas
+collision-
+Checks to see if arrows are inside a box when the buttons are pressed. clears them out if so. otherwise they fall to the bottom
+After a certain amount of misses in a row the game will end and the game over screen will appear
+canvas- loops through dropping the arrows and redrawing.
