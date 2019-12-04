@@ -1,0 +1,93 @@
+/*
+	canvas-animation.css 
+*/
+
+
+/* -------------------------------------------------------------- */
+
+
+/* Fonts */
+
+
+/* find fonts that you like from https://www.google.com/fonts/ and include them here*/
+
+@import url(https://fonts.googleapis.com/css?family=Orbitron);
+@import url(https://fonts.googleapis.com/css?family=Special+Elite);
+
+/* -------------------------------------------------------------- */
+
+
+/* Framing Styles */
+
+body {
+    color: #ffffff;
+    background-color: #111;
+}
+
+a {
+    color: #ffffff;
+    text-decoration: none;
+
+}
+/* -------------------------------------------------------------- */
+
+
+/* Front Workaround -- Need to use fonts on the page to use on Canvas */
+
+#fontFix {
+    visibility: hidden;
+    /* hide this section */
+}
+
+.font-Orbitron {
+    font-family: 'Orbitron', sans-serif;
+}
+
+.font-Special-Elite {
+    font-family: 'Special Elite';
+}
+
+
+/* -------------------------------------------------------------- */
+
+
+/* Canvas Styles */
+
+#myCanvas {
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    margin-top: 40px;
+    /* add a shadow */
+    -moz-box-shadow: 10px 10px 25px rgba(255, 255, 255, 0.4);
+    -webkit-box-shadow: 10px 10px 25px rgba(255, 255, 255, 0.4);
+    box-shadow: 10px 10px 25px rgba(255, 255, 255, 0.4);
+}
+
+
+/* -------------------------------------------------------------- */
+
+
+/* Control Section Styles */
+
+#canvasControls {
+    text-align: center;
+}
+
+#documentMessage {
+    font-family: 'Orbitron', sans-serif;
+}
+
+
+/* -------------------------------------------------------------- */
+
+
+/* Alignment Rules */
+
+.center-text {
+    text-align: center;
+}
+
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

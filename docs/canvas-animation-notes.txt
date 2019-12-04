@@ -1,0 +1,108 @@
+Canvas Animation Template Notes
+
+---------------------------------------------------------------------------
+1.0  Canvas Animation Template Project Folder
+---------------------------------------------------------------------------
+
+This is an example project folder for understanding animation and using the a gameloop().
+
+    canvas-animation.html 
+    css/canvas-animation.css 
+    js/canvas-animation.js
+    canvas-animation-notes.txt
+
+1.1  Introduction to Animation
+---------------------------------------------------------------------------
+
+We had been using setInterval() to repeat actions on our canvas.  That provided us a simple, crude, form of animation.
+
+JS has a method to will provide animation frames for us - requestAnimationFrame()
+
+Basically this provides us an optimized interval for animation.
+
+So we are replacing our setInterval() call with a requestAnimationFrame() call and we do this inside of a new function that we call gameLoop().
+
+This new gameLoop() allow us the group any actions we want to occur before each frame and then call drawCanvas();
+
+1.2  Scaffolding for Animation
+---------------------------------------------------------------------------
+
+The basic setup of gameLoop() is:
+        
+        //define our canvas stuff
+        drawCanvas() {
+            
+            //Do whatever we do on the canvas.  
+            drawStuff();
+            ...
+            drawMoreStuff();
+            
+        }
+        
+        //define our game loop
+        gameLoop() {
+        
+            //Get the next animation frame
+            requestAnimationFrame( gameLoop );
+
+            //Do whatever we do to our objects
+            changeStuff();
+            ...
+            changeMoreStuff();
+
+            //clear the canvas
+            clearCanvas();
+            
+            //draw the canvas
+            drawCanvas();
+        }
+        
+        //do any setup stuff
+        setSetStuffUp();
+        
+        //call gameLoop()
+        gameloop();
+            
+
+Our basic step for animation using the gameLoop() function becomes:
+
+    canvasApp() {
+    
+        // Check to see if the canvas has a context 
+        
+        // Utility Fuctions 
+            - add any utility functions (ex.  getRandom( min, max) ) 
+
+        // Setup the canvas object
+        
+        // Setup an object variables
+            - Start X, Y
+            - Speed
+            - Color
+            - Move X, Y
+
+        // Event Handlers     
+            - add any event listeners
+            - add any event handler functions
+
+        // Create, Move, Draw object functions
+        
+        // Canvas functions
+        - clearCanvas() function
+        - drawCanvas() function
+        
+        // Game Loop
+        - gameLoop() function
+        - setup before game loop is called
+        - call gameLoop()
+
+    }//canvasApp()
+
+
+1.3  Animation Resources
+---------------------------------------------------------------------------
+
+For more about requestAnimationFrame()
+
+    http://creativejs.com/resources/requestanimationframe/
+
