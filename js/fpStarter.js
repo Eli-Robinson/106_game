@@ -71,6 +71,10 @@ function canvasApp() {
     // Image Index Location Variables
     var bgImageIndex = 0;
     var neoImageIndex = 1;
+    var upArrowIndex = 2;
+    var downArrowIndex = 3;
+    var rightArrowIndex = 4;
+    var leftArrowIndex = 5;
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create and load image objects into an array 
@@ -169,7 +173,78 @@ function canvasApp() {
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
     /* Neo Variables and Functions */
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-    
+    //-----------------------------------------------------------
+    /* Arrow variables */
+    var arrows = [];
+    var createRate = 100;
+    var counter = 0;
+    var arrowType = -1;
+
+    var speed = -1;
+
+    // scale the actual image size to the display size
+
+    var upArrowW = -1;
+    var upArrowH = -1;
+
+    var downArrowW = -1;
+    var downArrowH = -1;
+
+    var rightArrowW = -1;
+    var rightArrowH = -1;
+
+    var leftArrowW = -1;
+    var leftArrowH = -1;
+
+    // start at the right part of canvas
+    var upStartX = -1;
+    var upStartY = 0;
+
+    var downStartX = -1;
+    var downStartY = 0;
+
+    var rightStartX = -1;
+    var rightStartY = 0;
+
+    var leftStartX = -1;
+    var leftStartY = 0;
+
+    //define arrow object
+
+    var up = {
+        x: upStartX,
+        y: upStartY,
+        w: upArrowW,
+        h: upArrowH,
+        imgIndex: upArrowIndex
+    };
+
+    var down = {
+        x: downStartX,
+        y: downStartY,
+        w: downArrowW,
+        h: downArrowH,
+        imgIndex: downArrowIndex
+    };
+
+    var right = {
+        x: rightStartX,
+        y: rightStartY,
+        w: rightArrowW,
+        h: rightArrowH,
+        imgIndex: rightArrowIndex
+    };
+
+    var left = {
+        x: leftStartX,
+        y: leftStartY,
+        w: leftArrowW,
+        h: leftArrowH,
+        imgIndex: leftArrowIndex
+    };
+
+
+
     //-----------------------------------------------------------
     /* Neo variables */
     
@@ -189,7 +264,32 @@ function canvasApp() {
         h: neoImageH,
         imgIndex: neoImageIndex
     };
-    
+
+    //-----------------------------------------------------------
+    // draw the moving arrows and create new arrows
+    function moveArrows() {
+        if(counter%createRate === 0){
+            arrowType = getRandom(0, 3);
+            if(arrowType === 0){
+                arrows.push(up);
+            } else if(arrowType === 1){
+                arrows.push(down);
+            } else if (arrowType === 2){
+                arrows.push(right);
+            } else {
+                arrows.push(left);
+            }
+            counter++;
+        }
+        for(var i=0; i<arrows.length; i++){
+            arrows[i].y += speed;
+            if(arrows[i].y > canvasHeight){
+                arrows.splice(i, 1);
+            }
+            context.drawImage(images[arrows[i].imgIndex], arrows[i].x, arrows[i].y, arrows[i].w, arrows[i].h)
+        }
+
+    }
     //-----------------------------------------------------------
     // draw the Neo Image in a new random location
     function drawNeoImage() {
