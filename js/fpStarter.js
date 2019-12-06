@@ -65,7 +65,11 @@ function canvasApp() {
     var imageSources = [   
         //bg Image
         "./images/bgImage.jpg",
-        "./images/matrix-neo.png"
+        "./images/matrix-neo.png",
+        "./images/UpArrow.png",
+        "./images/DownArrow.png",
+        "./images/RightArrow.png",
+        "./images/LeftArrow.png"
     ]; //imageSource    
 
     // Image Index Location Variables
@@ -126,7 +130,7 @@ function canvasApp() {
     // Start Game 
     var gameOn = false;
     var gameOver = false;
-    var stopInterval = 500;
+    var stopInterval = 2500;
 
     //-----------------------------------------------------------
     // Frame Counter
@@ -176,37 +180,37 @@ function canvasApp() {
     //-----------------------------------------------------------
     /* Arrow variables */
     var arrows = [];
-    var createRate = 100;
+    var createRate = 8;
     var counter = 0;
     var arrowType = -1;
 
-    var speed = -1;
+    var speed = 6;
 
     // scale the actual image size to the display size
 
-    var upArrowW = -1;
-    var upArrowH = -1;
+    var upArrowW = 150;
+    var upArrowH = 150;
 
-    var downArrowW = -1;
-    var downArrowH = -1;
+    var downArrowW = 150;
+    var downArrowH = 150;
 
-    var rightArrowW = -1;
-    var rightArrowH = -1;
+    var rightArrowW = 150;
+    var rightArrowH = 150;
 
-    var leftArrowW = -1;
-    var leftArrowH = -1;
+    var leftArrowW = 150;
+    var leftArrowH = 150;
 
     // start at the right part of canvas
-    var upStartX = -1;
+    var upStartX = 2*canvasWidth/5-upArrowW/2;
     var upStartY = 0;
 
-    var downStartX = -1;
+    var downStartX = 3* canvasWidth/5-upArrowW/2;
     var downStartY = 0;
 
-    var rightStartX = -1;
+    var rightStartX = 4* canvasWidth/5-upArrowW/2;
     var rightStartY = 0;
 
-    var leftStartX = -1;
+    var leftStartX = canvasWidth/5-upArrowW/2;
     var leftStartY = 0;
 
     //define arrow object
@@ -268,25 +272,57 @@ function canvasApp() {
     //-----------------------------------------------------------
     // draw the moving arrows and create new arrows
     function moveArrows() {
-        if(counter%createRate === 0){
-            arrowType = getRandom(0, 3);
+        //draws new arrows to canvas
+        if(frameCounter%createRate === 0){
+            arrowType = getRandom(0, 4);
             if(arrowType === 0){
+                var up = {
+                    x: upStartX,
+                    y: upStartY,
+                    w: upArrowW,
+                    h: upArrowH,
+                    imgIndex: upArrowIndex
+                };
                 arrows.push(up);
             } else if(arrowType === 1){
+                var down = {
+                    x: downStartX,
+                    y: downStartY,
+                    w: downArrowW,
+                    h: downArrowH,
+                    imgIndex: downArrowIndex
+                };
                 arrows.push(down);
             } else if (arrowType === 2){
+                var right = {
+                    x: rightStartX,
+                    y: rightStartY,
+                    w: rightArrowW,
+                    h: rightArrowH,
+                    imgIndex: rightArrowIndex
+                };
                 arrows.push(right);
             } else {
+                var left = {
+                    x: leftStartX,
+                    y: leftStartY,
+                    w: leftArrowW,
+                    h: leftArrowH,
+                    imgIndex: leftArrowIndex
+                };
                 arrows.push(left);
             }
-            counter++;
         }
-        for(var i=0; i<arrows.length; i++){
+        //moves the arrows and deletes used arrows
+        for(var i=0; i<arrows.length; i++) {
             arrows[i].y += speed;
-            if(arrows[i].y > canvasHeight){
+            if (arrows[i].y > canvasHeight) {
                 arrows.splice(i, 1);
             }
-            context.drawImage(images[arrows[i].imgIndex], arrows[i].x, arrows[i].y, arrows[i].w, arrows[i].h)
+        }
+        //draws the arrows to the canvas
+        for(var j=0; j<arrows.length; j++) {
+            context.drawImage(images[arrows[j].imgIndex], arrows[j].x, arrows[j].y, arrows[j].w, arrows[j].h)
         }
 
     }
@@ -351,12 +387,12 @@ function canvasApp() {
     function writeStartScreen() {
 
         //build the frame counter message
-        var message = "Click to start the game" ;
+        var message = "Click Yeet To Beat My Meat" ;
 
         //write the frame counter on the canvas
         context.fillStyle = "white";
         context.font = "30px Orbitron";
-        context.fillText(message, 100, 200);
+        context.fillText(message, 200, 500);
 
         //write the frame counter on the HTML page
         document.getElementById("documentMessage").innerHTML = message;
@@ -400,19 +436,19 @@ function canvasApp() {
 
         //--------------------------------------------
         //1. clear and setup the canvas
-
+        clearCanvas();
         //draw the bg image
-        drawBGImage();
+        // drawBGImage();
 
         //--------------------------------------------
         //2. move, change any objects
 
 
         //--------------------------------------------
-        //3. draw any objects
-        
+        //3. draw any objects (the arrows)
+        moveArrows();
         //draw the Neo image
-        drawNeoImage();
+        // drawNeoImage();
 
         
         //--------------------------------------------
@@ -444,6 +480,7 @@ function canvasApp() {
     function eventMouseClickCanvas(e) {
 
         //start the game
+
         startGame();
 
     } //eventMouseClick()
@@ -492,24 +529,24 @@ function canvasApp() {
         requestAnimationFrame(gameLoop);
         
         //if the game is On
-        if ( gameOn == true ) {
+        if ( gameOn === true ) {
         
             //increment the frame counter
             frameCounter++;
         
             //play a sound based on an interval
-            if ( (frameCounter % soundInterval) == 0 ) {
-                playSciFiSound();
-            }//if     
+            // if ( (frameCounter % soundInterval) == 0 ) {
+            //     playSciFiSound();
+            // }//if
             
             //check if the game is over
             checkGameOver();
 
             //if the game is not over
-            if ( gameOver == false ) {
+            if ( gameOver === false ) {
                 
                 //play the game
-                drawCanvas();                
+                drawCanvas();
 
             }//if the game is over
             else {
