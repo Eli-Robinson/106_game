@@ -327,6 +327,8 @@ function canvasApp() {
 
     }
     //-----------------------------------------------------------
+    // check hitboxed on buttonPress
+    //-----------------------------------------------------------
     // draw the Neo Image in a new random location
     function drawNeoImage() {
 
@@ -453,7 +455,7 @@ function canvasApp() {
         
         //--------------------------------------------
         //4. check for collisions        
-        
+
         
         //--------------------------------------------
         //5. write any counters
