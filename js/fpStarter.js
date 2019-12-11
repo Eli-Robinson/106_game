@@ -139,6 +139,8 @@ function canvasApp() {
     var gameOver = false;
     var stopInterval = 2500;
     var Points = 1000;
+    var Combo = 0;
+    var LastHit = "";
 
     //-----------------------------------------------------------
     // Frame Counter
@@ -279,16 +281,21 @@ function canvasApp() {
 
     //Function for adding and removing points
     function ChangePoints(score) {
+            lastHIt = score;
         if (score === "Perfect!") {
-            points += 1000;
+            combo+=1;
+            points += 1000+1000*combo/20;
         }
         if (score === "Great!") {
-            points += 500;
+            combo+=1;
+            points += 500+500*combo/2;
         }
         if (score === "Good") {
-            points += 250;
+            combo+=1
+            points += 250+250*combo/20;
         }
         if (score === "Missed") {
+            combo=0;
             points = points / 2 - 1000;
         }
     }
@@ -495,9 +502,11 @@ function canvasApp() {
         // function to write the frame counter to the canvas and HTML page
         function writeCounters() {
 
-            //build the frame counter message
+            //build the frame counter 
             var message = "Frame: " + frameCounter;
-            //var message = "Points: " + Points;
+            var message2 = "Points: " + Math.floor(points);
+            var message3 = combo;
+            var message4 = LastHit;
 
             //write the frame counter on the canvas
             context.fillStyle = "white";
@@ -505,7 +514,7 @@ function canvasApp() {
             context.fillText(message, 10, 50);
 
             //write the frame counter on the HTML page
-            document.getElementById("documentMessage").innerHTML = message;
+            document.getElementById("documentMessage").innerHTML = message + "         " + message2 +"            " + message4 + " X" + message3 +" Combo";
 
         } //writeCounters()
 
