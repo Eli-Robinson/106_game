@@ -194,6 +194,8 @@ function canvasApp() {
 
     var speed = 6;
 
+    var points = 0;
+
     // scale the actual image size to the display size
 
     var upArrowW = 150;
@@ -272,18 +274,19 @@ function canvasApp() {
 
     //Function for adding and removing points
     function ChangePoints(score) {
-        if (score == "Perfect!") {
+        if (score === "Perfect!") {
             points += 1000;
         }
-        if (score == "Great!") {
+        if (score === "Great!") {
             points += 500;
         }
-        if (score == "Good") {
+        if (score === "Good") {
             points += 250;
         }
-        if (score == "Missed") {
+        if (score === "Missed") {
             points = points / 2 - 1000;
         }
+    }
 
         //-----------------------------------------------------------
         // draw the moving arrows and create new arrows
@@ -361,7 +364,9 @@ function canvasApp() {
             if (e.keyCode === 38) {
                 flag = false;
                 for (let i = 0; i < arrows.length; i++) {
-                    //put range here
+                    if ( arrows[i].x === upStartX && arrows[i].y < canvasWidth - 80 && arrows[i].y > canvasWidth - 110){
+                        console.log(arrows[i].y, arrows[i].x);
+                    }
                 }
             }
 
@@ -581,7 +586,7 @@ function canvasApp() {
                 // if ( (frameCounter % soundInterval) == 0 ) {
                 //     playSciFiSound();
                 // }//if
-                if (Points >= 1) {
+                if (Points <= 1) {
                     GameOver = True;
                 }
                 //check if the game is over
