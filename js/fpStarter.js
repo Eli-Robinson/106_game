@@ -193,8 +193,13 @@ function canvasApp() {
     var arrowType = -1;
 
     var speed = 6;
-
+    var score = "Missed";
     var points = 0;
+
+    let perfectRange = 5;
+    let greatRange = 30;
+    let goodRange = 95;
+    let hitboxOffset = 20;
 
     // scale the actual image size to the display size
 
@@ -338,6 +343,8 @@ function canvasApp() {
                 arrows[i].y += speed;
                 if (arrows[i].y > canvasHeight) {
                     arrows.splice(i, 1);
+                    score = "Missed";
+                    ChangePoints(score);
                 }
             }
             //draws the arrows to the canvas
@@ -346,10 +353,10 @@ function canvasApp() {
             }
 
             //draws outlines to canvas
-            context.drawImage(images[5], upStartX, canvasHeight - 170, upArrowW, upArrowH);
-            context.drawImage(images[6], downStartX, canvasHeight - 170, downArrowW, downArrowH);
-            context.drawImage(images[7], rightStartX, canvasHeight - 170, rightArrowW, rightArrowH);
-            context.drawImage(images[8], leftStartX, canvasHeight - 170, leftArrowW, leftArrowH);
+            context.drawImage(images[5], upStartX, canvasHeight - upArrowH - hitboxOffset, upArrowW, upArrowH);
+            context.drawImage(images[6], downStartX, canvasHeight - downArrowH - hitboxOffset, downArrowW, downArrowH);
+            context.drawImage(images[7], rightStartX, canvasHeight - rightArrowH - hitboxOffset, rightArrowW, rightArrowH);
+            context.drawImage(images[8], leftStartX, canvasHeight - leftArrowH - hitboxOffset, leftArrowW, leftArrowH);
 
         }
 
@@ -359,16 +366,89 @@ function canvasApp() {
         //-----------------------------------------------------------
         // check hitboxed on buttonPress
         function keyBoard(e) {
-            var flag = false;
+            score = "Missed";
             console.log(e.keyCode);
             if (e.keyCode === 38) {
-                flag = false;
                 for (let i = 0; i < arrows.length; i++) {
-                    if ( arrows[i].x === upStartX && arrows[i].y < canvasWidth - 80 && arrows[i].y > canvasWidth - 110){
-                        console.log(arrows[i].y, arrows[i].x);
+                    if ( arrows[i].x === upStartX && arrows[i].y < canvasHeight-upArrowH - hitboxOffset + perfectRange && arrows[i].y > canvasHeight -upArrowH - hitboxOffset - perfectRange){
+                        score = "Perfect!";
+                        arrows.splice(i,1);
+                        break
+                    }
+                    else if ( arrows[i].x === upStartX && arrows[i].y < canvasHeight-upArrowH - hitboxOffset + greatRange && arrows[i].y > canvasHeight -upArrowH - hitboxOffset - greatRange){
+                        score = "Great!";
+                        arrows.splice(i,1);
+                        break
+                    }
+                    else if ( arrows[i].x === upStartX && arrows[i].y < canvasHeight - upArrowH - hitboxOffset + goodRange && arrows[i].y > canvasHeight - upArrowH - hitboxOffset - goodRange){
+                        score = "Good";
+                        arrows.splice(i,1);
+                        break
                     }
                 }
             }
+            if (e.keyCode === 40) {
+                for (let i = 0; i < arrows.length; i++) {
+                    if ( arrows[i].x === downStartX && arrows[i].y < canvasHeight-downArrowH - hitboxOffset + perfectRange && arrows[i].y > canvasHeight -downArrowH - hitboxOffset - perfectRange){
+                        score = "Perfect!";
+                        arrows.splice(i,1);
+                        break
+                    }
+                    else if ( arrows[i].x === downStartX && arrows[i].y < canvasHeight-downArrowH - hitboxOffset + greatRange && arrows[i].y > canvasHeight -downArrowH - hitboxOffset - greatRange){
+                        score = "Great!";
+                        arrows.splice(i,1);
+                        break
+                    }
+                    else if ( arrows[i].x === downStartX && arrows[i].y < canvasHeight - downArrowH - hitboxOffset + goodRange && arrows[i].y > canvasHeight - downArrowH - hitboxOffset - goodRange){
+                        score = "Good";
+                        arrows.splice(i,1);
+                        break
+                    }
+                }
+
+            }
+            if (e.keyCode === 39) {
+                for (let i = 0; i < arrows.length; i++) {
+                    if ( arrows[i].x === rightStartX && arrows[i].y < canvasHeight-rightArrowH - hitboxOffset + perfectRange && arrows[i].y > canvasHeight -rightArrowH - hitboxOffset - perfectRange){
+                        score = "Perfect!";
+                        arrows.splice(i,1);
+                        break
+                    }
+                    else if ( arrows[i].x === rightStartX && arrows[i].y < canvasHeight-rightArrowH - hitboxOffset + greatRange && arrows[i].y > canvasHeight -rightArrowH - hitboxOffset - greatRange){
+                        score = "Great!";
+                        arrows.splice(i,1);
+                        break
+                    }
+                    else if ( arrows[i].x === rightStartX && arrows[i].y < canvasHeight - rightArrowH - hitboxOffset + goodRange && arrows[i].y > canvasHeight - rightArrowH - hitboxOffset - goodRange){
+                        score = "Good";
+                        arrows.splice(i,1);
+                        break
+                    }
+                }
+
+            }
+            if (e.keyCode === 37) {
+                for (let i = 0; i < arrows.length; i++) {
+                    if (arrows[i].x === leftStartX && arrows[i].y < canvasHeight - leftArrowH - hitboxOffset + perfectRange && arrows[i].y > canvasHeight - leftArrowH - hitboxOffset - perfectRange) {
+                        score = "Perfect!";
+                        arrows.splice(i, 1);
+                        break
+                    } else if (arrows[i].x === leftStartX && arrows[i].y < canvasHeight - leftArrowH - hitboxOffset + greatRange && arrows[i].y > canvasHeight - leftArrowH - hitboxOffset - greatRange) {
+                        score = "Great!";
+                        arrows.splice(i, 1);
+                        break
+                    } else if (arrows[i].x === leftStartX && arrows[i].y < canvasHeight - leftArrowH - hitboxOffset + goodRange && arrows[i].y > canvasHeight - leftArrowH - hitboxOffset - goodRange) {
+                        score = "Good";
+                        arrows.splice(i, 1);
+                        break
+                    }
+                }
+
+            }
+            ChangePoints(score);
+            console.log(points);
+            console.log(score);
+
 
 
         }
