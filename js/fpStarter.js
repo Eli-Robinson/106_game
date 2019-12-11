@@ -106,8 +106,8 @@ function canvasApp() {
                 if (++loadedImages >= imageSources.length) {
                     callback(images);
                 }
-                 //if
-            };//onload()
+                //if
+            }; //onload()
 
             //- - - - - - - - - - - - - - - - - - - - -
             //set the image source
@@ -138,6 +138,7 @@ function canvasApp() {
     var gameOn = false;
     var gameOver = false;
     var stopInterval = 2500;
+    var Points = 1000;
 
     //-----------------------------------------------------------
     // Frame Counter
@@ -173,7 +174,7 @@ function canvasApp() {
         //play the SciFiSound sound
         SciFiSound.play();
 
-    }//playSciFiSound()    
+    } //playSciFiSound()    
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
     /* Object Variables and Functions */
@@ -214,7 +215,7 @@ function canvasApp() {
     var downStartX = 215;
     var downStartY = -100;
 
-    var rightStartX = canvasWidth-12-rightArrowW;
+    var rightStartX = canvasWidth - 12 - rightArrowW;
     var rightStartY = -100;
 
     var leftStartX = 12;
@@ -269,341 +270,359 @@ function canvasApp() {
     //define the neo object with the starting values
 
 
-    //-----------------------------------------------------------
-    // draw the moving arrows and create new arrows
-    function moveArrows() {
-        //draws new arrows to canvas
-        if (frameCounter % createRate === 0) {
-            arrowType = getRandom(0, 4);
-            if (arrowType === 0) {
-                var up = {
-                    x: upStartX,
-                    y: upStartY,
-                    w: upArrowW,
-                    h: upArrowH,
-                    imgIndex: upArrowIndex
-                };
-                arrows.push(up);
-            } else if (arrowType === 1) {
-                var down = {
-                    x: downStartX,
-                    y: downStartY,
-                    w: downArrowW,
-                    h: downArrowH,
-                    imgIndex: downArrowIndex
-                };
-                arrows.push(down);
-            } else if (arrowType === 2) {
-                var right = {
-                    x: rightStartX,
-                    y: rightStartY,
-                    w: rightArrowW,
-                    h: rightArrowH,
-                    imgIndex: rightArrowIndex
-                };
-                arrows.push(right);
-            } else {
-                var left = {
-                    x: leftStartX,
-                    y: leftStartY,
-                    w: leftArrowW,
-                    h: leftArrowH,
-                    imgIndex: leftArrowIndex
-                };
-                arrows.push(left);
+    //Function for adding and removing points
+    function ChangePoints(score) {
+        if (score == "Perfect!") {
+            points += 1000;
+        }
+        if (score == "Great!") {
+            points += 500;
+        }
+        if (score == "Good") {
+            points += 250;
+        }
+        if (score == "Missed") {
+            points = points / 2 - 1000;
+        }
+
+        //-----------------------------------------------------------
+        // draw the moving arrows and create new arrows
+        function moveArrows() {
+            //draws new arrows to canvas
+            if (frameCounter % createRate === 0) {
+                arrowType = getRandom(0, 4);
+                if (arrowType === 0) {
+                    var up = {
+                        x: upStartX,
+                        y: upStartY,
+                        w: upArrowW,
+                        h: upArrowH,
+                        imgIndex: upArrowIndex
+                    };
+                    arrows.push(up);
+                } else if (arrowType === 1) {
+                    var down = {
+                        x: downStartX,
+                        y: downStartY,
+                        w: downArrowW,
+                        h: downArrowH,
+                        imgIndex: downArrowIndex
+                    };
+                    arrows.push(down);
+                } else if (arrowType === 2) {
+                    var right = {
+                        x: rightStartX,
+                        y: rightStartY,
+                        w: rightArrowW,
+                        h: rightArrowH,
+                        imgIndex: rightArrowIndex
+                    };
+                    arrows.push(right);
+                } else {
+                    var left = {
+                        x: leftStartX,
+                        y: leftStartY,
+                        w: leftArrowW,
+                        h: leftArrowH,
+                        imgIndex: leftArrowIndex
+                    };
+                    arrows.push(left);
+                }
             }
-        }
 
-        //moves the arrows and deletes used arrows
-        for (var i = 0; i < arrows.length; i++) {
-            arrows[i].y += speed;
-            if (arrows[i].y > canvasHeight) {
-                arrows.splice(i, 1);
+            //moves the arrows and deletes used arrows
+            for (var i = 0; i < arrows.length; i++) {
+                arrows[i].y += speed;
+                if (arrows[i].y > canvasHeight) {
+                    arrows.splice(i, 1);
+                }
             }
-        }
-        //draws the arrows to the canvas
-        for (var j = 0; j < arrows.length; j++) {
-            context.drawImage(images[arrows[j].imgIndex], arrows[j].x, arrows[j].y, arrows[j].w, arrows[j].h)
-        }
-
-        //draws outlines to canvas
-        context.drawImage(images[5], upStartX, canvasHeight-170, upArrowW, upArrowH);
-        context.drawImage(images[6], downStartX, canvasHeight-170, downArrowW, downArrowH);
-        context.drawImage(images[7], rightStartX, canvasHeight-170, rightArrowW, rightArrowH);
-        context.drawImage(images[8], leftStartX, canvasHeight-170, leftArrowW, leftArrowH);
-
-    }
-
-
-
-
-    //-----------------------------------------------------------
-    // check hitboxed on buttonPress
-    function keyBoard(e) {
-        var flag = false;
-        console.log(e.keyCode);
-        if(e.keyCode === 38){
-            flag = false;
-            for(let i=0; i<arrows.length; i++){
-                //put range here
+            //draws the arrows to the canvas
+            for (var j = 0; j < arrows.length; j++) {
+                context.drawImage(images[arrows[j].imgIndex], arrows[j].x, arrows[j].y, arrows[j].w, arrows[j].h)
             }
+
+            //draws outlines to canvas
+            context.drawImage(images[5], upStartX, canvasHeight - 170, upArrowW, upArrowH);
+            context.drawImage(images[6], downStartX, canvasHeight - 170, downArrowW, downArrowH);
+            context.drawImage(images[7], rightStartX, canvasHeight - 170, rightArrowW, rightArrowH);
+            context.drawImage(images[8], leftStartX, canvasHeight - 170, leftArrowW, leftArrowH);
+
         }
 
 
-    }
-
-    //-----------------------------------------------------------
-    // draw the Neo Image in a new random location
-    function drawNeoImage() {
-
-        //set a random location
-        neo.x = getRandom(0, canvasWidth - neoImageW);
-        neo.y = getRandom(0, canvasHeight - neoImageH);
-
-        //draw the neo image
-        context.drawImage(images[neo.imgIndex], neo.x, neo.y, neo.w, neo.w);
-
-    } //drawNeoImage()
-
-    /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-    /* Canvas Message and Image functions */
-    /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-    //-----------------------------------------------------------
-    // draw the BG Image
-    function drawBGImage() {
-
-        //draw the bg image to fill the canvas
-        context.drawImage(images[bgImageIndex], 0, 0, canvasWidth, canvasHeight);
-
-    } //drawBGImage()
-
-    //-----------------------------------------------------------
-    // clear canvas
-    function clearCanvas() {
-
-        // set a fill style of white
-        context.fillStyle = canvasColor;
-
-        // fill the while canvas with the fill style
-        context.fillRect(0, 0, canvasWidth, canvasHeight);
-
-    } //clearCanvas()
-
-    //-----------------------------------------------------------
-    // function to write the frame counter to the canvas and HTML page
-    function writeCounters() {
-
-        //build the frame counter message
-        var message = "Frame: " + frameCounter;
-
-        //write the frame counter on the canvas
-        context.fillStyle = "white";
-        context.font = "30px Orbitron";
-        context.fillText(message, 10, 50);
-
-        //write the frame counter on the HTML page
-        document.getElementById("documentMessage").innerHTML = message;
-
-    } //writeCounters()
 
 
-    //-----------------------------------------------------------
-    // function start screen
-    function writeStartScreen() {
-
-        //build the frame counter message
-        var message = "Click Yeet To Beat My Meat";
-
-        //write the frame counter on the canvas
-        context.fillStyle = "white";
-        context.font = "30px Orbitron";
-        context.fillText(message, 200, 500);
-
-        //write the frame counter on the HTML page
-        document.getElementById("documentMessage").innerHTML = message;
-
-    } //writeStartScreen()
-
-    //-----------------------------------------------------------
-    //write the End Screen
-    function writeGameOver() {
-
-        //to build message strings
-        var message;
-
-        //clear the canvas
-        clearCanvas();
-
-        //draw the neo image at its last postion
-        context.drawImage(images[neo.imgIndex], neo.x, neo.y, neo.w, neo.w);
-
-        //font color
-        context.fillStyle = "white";
-
-        //message
-        message = "Game Over";
-        context.font = "60px Orbitron";
-        context.fillText(message, 125, 60);
-
-        //message
-        var message = "Click to Try Again";
-        context.font = "42px Orbitron";
-        context.fillText(message, 100, 390);
-
-        //write the frame counter on the HTML page
-        document.getElementById("documentMessage").innerHTML = message;
-
-    } //writeGameOver()
-
-    //-----------------------------------------------------------
-    //draw the canvas
-    function drawCanvas() {
-
-        //--------------------------------------------
-        //1. clear and setup the canvas
-        clearCanvas();
-        //draw the bg image
-        drawBGImage();
-
-        //--------------------------------------------
-        //2. move, change any objects
+        //-----------------------------------------------------------
+        // check hitboxed on buttonPress
+        function keyBoard(e) {
+            var flag = false;
+            console.log(e.keyCode);
+            if (e.keyCode === 38) {
+                flag = false;
+                for (let i = 0; i < arrows.length; i++) {
+                    //put range here
+                }
+            }
 
 
-        //--------------------------------------------
-        //3. draw any objects (the arrows)
-        moveArrows();
-        //draw the Neo image
-        // drawNeoImage();
+        }
+
+        //-----------------------------------------------------------
+        // draw the Neo Image in a new random location
+        function drawNeoImage() {
+
+            //set a random location
+            neo.x = getRandom(0, canvasWidth - neoImageW);
+            neo.y = getRandom(0, canvasHeight - neoImageH);
+
+            //draw the neo image
+            context.drawImage(images[neo.imgIndex], neo.x, neo.y, neo.w, neo.w);
+
+        } //drawNeoImage()
+
+        /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+        /* Canvas Message and Image functions */
+        /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+        //-----------------------------------------------------------
+        // draw the BG Image
+        function drawBGImage() {
+
+            //draw the bg image to fill the canvas
+            context.drawImage(images[bgImageIndex], 0, 0, canvasWidth, canvasHeight);
+
+        } //drawBGImage()
+
+        //-----------------------------------------------------------
+        // clear canvas
+        function clearCanvas() {
+
+            // set a fill style of white
+            context.fillStyle = canvasColor;
+
+            // fill the while canvas with the fill style
+            context.fillRect(0, 0, canvasWidth, canvasHeight);
+
+        } //clearCanvas()
+
+        //-----------------------------------------------------------
+        // function to write the frame counter to the canvas and HTML page
+        function writeCounters() {
+
+            //build the frame counter message
+            var message = "Frame: " + frameCounter;
+            //var message = "Points: " + Points;
+
+            //write the frame counter on the canvas
+            context.fillStyle = "white";
+            context.font = "30px Orbitron";
+            context.fillText(message, 10, 50);
+
+            //write the frame counter on the HTML page
+            document.getElementById("documentMessage").innerHTML = message;
+
+        } //writeCounters()
 
 
-        //--------------------------------------------
-        //4. check for collisions        
+        //-----------------------------------------------------------
+        // function start screen
+        function writeStartScreen() {
+
+            //build the frame counter message
+            var message = "Click Yeet To Beat My Meat";
+
+            //write the frame counter on the canvas
+            context.fillStyle = "white";
+            context.font = "30px Orbitron";
+            context.fillText(message, 200, 500);
+
+            //write the frame counter on the HTML page
+            document.getElementById("documentMessage").innerHTML = message;
+
+        } //writeStartScreen()
+
+        //-----------------------------------------------------------
+        //write the End Screen
+        function writeGameOver() {
+
+            //to build message strings
+            var message;
+
+            //clear the canvas
+            clearCanvas();
+
+            //draw the neo image at its last postion
+            context.drawImage(images[neo.imgIndex], neo.x, neo.y, neo.w, neo.w);
+
+            //font color
+            context.fillStyle = "white";
+
+            //message
+            message = "Game Over";
+            context.font = "60px Orbitron";
+            context.fillText(message, 125, 60);
+
+            //message
+            var message = "Click to Try Again";
+            context.font = "42px Orbitron";
+            context.fillText(message, 100, 390);
+
+            //write the frame counter on the HTML page
+            document.getElementById("documentMessage").innerHTML = message;
+
+        } //writeGameOver()
+
+        //-----------------------------------------------------------
+        //draw the canvas
+        function drawCanvas() {
+
+            //--------------------------------------------
+            //1. clear and setup the canvas
+            clearCanvas();
+            //draw the bg image
+            drawBGImage();
+
+            //--------------------------------------------
+            //2. move, change any objects
 
 
-        //--------------------------------------------
-        //5. write any counters
+            //--------------------------------------------
+            //3. draw any objects (the arrows)
+            moveArrows();
+            //draw the Neo image
+            // drawNeoImage();
 
-        //write the counters
-        writeCounters();
 
-    } //drawCanvas()
+            //--------------------------------------------
+            //4. check for collisions        
 
-    /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-    /* Event Listeners & Handlers */
-    /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-    //-----------------------------------------------------------
-    //listen for a click on the canvas
-    theCanvas.addEventListener("click", eventMouseClickCanvas);
+            //--------------------------------------------
+            //5. write any counters
 
-    //-----------------------------------------------------------
-    //listener for a click on the startButton and call setStartGame
-    startButton.addEventListener("click", eventMouseClickCanvas);
+            //write the counters
+            writeCounters();
 
-    //-----------------------------------------------------------
-    //start the game when the mouse is clicked
-    function eventMouseClickCanvas(e) {
+        } //drawCanvas()
 
-        //start the game
+        /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+        /* Event Listeners & Handlers */
+        /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-        startGame();
+        //-----------------------------------------------------------
+        //listen for a click on the canvas
+        theCanvas.addEventListener("click", eventMouseClickCanvas);
 
-    } //eventMouseClick()
+        //-----------------------------------------------------------
+        //listener for a click on the startButton and call setStartGame
+        startButton.addEventListener("click", eventMouseClickCanvas);
 
-    /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-    /* Game Loop */
-    /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+        //-----------------------------------------------------------
+        //start the game when the mouse is clicked
+        function eventMouseClickCanvas(e) {
 
-    //-----------------------------------------------------------
-    // start game setup function
-    function startGame() {
+            //start the game
 
-        console.log("startGame");
+            startGame();
 
-        //reset the gameOn and gameOver flags
-        gameOn = true;
-        gameOver = false;
+        } //eventMouseClick()
 
-        //reset the counters
+        /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+        /* Game Loop */
+        /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+        //-----------------------------------------------------------
+        // start game setup function
+        function startGame() {
+
+            console.log("startGame");
+
+            //reset the gameOn and gameOver flags
+            gameOn = true;
+            gameOver = false;
+
+            //reset the counters
+            frameCounter = 0;
+
+        } // startGame()
+
+        //-----------------------------------------------------------
+        // check if the game is over
+        function checkGameOver() {
+
+            //if frameCounter is > stopInterval then the game is over
+            if (frameCounter > stopInterval) {
+
+                // game is over
+                gameOver = true;
+
+                // and game on is false
+                gameOn = false;
+
+            } //if
+
+        } // checkGameOver()
+
+        // -----------------------------------------------------------
+        // the game loop
+        function gameLoop() {
+
+            //get the next animation frame
+            requestAnimationFrame(gameLoop);
+
+            //if the game is On
+            if (gameOn === true) {
+
+                //increment the frame counter
+                frameCounter++;
+
+                //play a sound based on an interval
+                // if ( (frameCounter % soundInterval) == 0 ) {
+                //     playSciFiSound();
+                // }//if
+                if (Points >= 1) {
+                    GameOver = True;
+                }
+                //check if the game is over
+                checkGameOver();
+
+                //if the game is not over
+                if (gameOver === false) {
+
+                    //play the game
+                    drawCanvas();
+
+                } //if the game is over
+                else {
+
+                    //draw the game over screen
+                    writeGameOver();
+
+                } //else
+
+
+            } //if gameOn
+
+
+        } //gameLoop()
+
+        // -----------------------------------------------------------
+        // do any setup
         frameCounter = 0;
 
-    } // startGame()
+        // -----------------------------------------------------------
+        //load the images and then call gameLoop()
+        loadImages(images, imageSources, function (images) {
 
-    //-----------------------------------------------------------
-    // check if the game is over
-    function checkGameOver() {
+            //setup
+            writeStartScreen();
 
-        //if frameCounter is > stopInterval then the game is over
-        if (frameCounter > stopInterval) {
+            //call game loop
+            gameLoop();
 
-            // game is over
-            gameOver = true;
-
-            // and game on is false
-            gameOn = false;
-
-        } //if
-
-    } // checkGameOver()
-
-    // -----------------------------------------------------------
-    // the game loop
-    function gameLoop() {
-
-        //get the next animation frame
-        requestAnimationFrame(gameLoop);
-
-        //if the game is On
-        if (gameOn === true) {
-
-            //increment the frame counter
-            frameCounter++;
-
-            //play a sound based on an interval
-            // if ( (frameCounter % soundInterval) == 0 ) {
-            //     playSciFiSound();
-            // }//if
-
-            //check if the game is over
-            checkGameOver();
-
-            //if the game is not over
-            if (gameOver === false) {
-
-                //play the game
-                drawCanvas();
-
-            }//if the game is over
-            else {
-
-                //draw the game over screen
-                writeGameOver();
-
-            }//else
+        });
+        window.addEventListener("keydown", keyBoard)
 
 
-        }//if gameOn
-
-
-    } //gameLoop()
-
-    // -----------------------------------------------------------
-    // do any setup
-    frameCounter = 0;
-
-    // -----------------------------------------------------------
-    //load the images and then call gameLoop()
-    loadImages(images, imageSources, function (images) {
-
-        //setup
-        writeStartScreen();
-
-        //call game loop
-        gameLoop();
-
-    });
-    window.addEventListener("keydown", keyBoard)
-
-
-}//canvasApp()
+    } //canvasApp()
