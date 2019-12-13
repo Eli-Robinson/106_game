@@ -137,9 +137,9 @@ function canvasApp() {
     // Start Game 
     var gameOn = false;
     var gameOver = false;
-    var stopInterval = 2500;
+    var stopInterval = 10;
     var Points = 1000;
-    var Combo = 0;
+    var combo = 0;
     var LastHit = "";
 
     //-----------------------------------------------------------
@@ -170,13 +170,7 @@ function canvasApp() {
     var soundInterval = soundIntervalOff;
 
     //-----------------------------------------------------------
-    // play a  sound
-    function playSciFiSound() {
-
-        //play the SciFiSound sound
-        SciFiSound.play();
-
-    } //playSciFiSound()    
+    // play a  sound  
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
     /* Object Variables and Functions */
@@ -193,10 +187,12 @@ function canvasApp() {
     var createRate = 50;
     var counter = 0;
     var arrowType = -1;
+    var randSpeed;
 
     var speed = 6;
     var score = "Missed";
     var points = 0;
+    var hitArrows = 0;
 
     let perfectRange = 5;
     let greatRange = 30;
@@ -266,22 +262,15 @@ function canvasApp() {
 
 
     //-----------------------------------------------------------
-    /* Neo variables */
-
     // scale the actual image size to the display size
-    var neoImageW = 512 * .5;
-    var neoImageH = 512 * .5;
 
-    // start in the middle of the canvas
-    var neoStartX = canvasWidth / 2 - neoImageW / 2;
-    var neoStartY = canvasHeight / 2 - neoImageH / 2;
 
     //define the neo object with the starting values
 
 
     //Function for adding and removing points
     function ChangePoints(score) {
-            lastHIt = score;
+            LastHit = score;
         if (score === "Perfect!") {
             combo+=1;
             points += 1000+1000*combo/20;
@@ -304,7 +293,33 @@ function canvasApp() {
         // draw the moving arrows and create new arrows
         function moveArrows() {
             //draws new arrows to canvas
-            if (frameCounter % createRate === 0) {
+            speed = 6;
+            randSpeed = getRandom(0,24);
+            if(frameCounter>1000){
+                randSpeed = getRandom(0,22);
+                speed = 8;
+            }
+            if(frameCounter>2000){
+                randSpeed = getRandom(0,20);
+                speed = 10;
+            }
+            if(frameCounter>4000){
+                randSpeed = getRandom(0,18);
+                speed = 11;
+            }
+            if(frameCounter>8000){
+                randSpeed = getRandom(0,16);
+                speed = 12
+            }
+            if(frameCounter>15000){
+                randSpeed = getRandom(0,4);
+                speed = 15
+            }
+            if(frameCounter>20000){
+                randSpeed = 0;
+                speed = 30;
+            }
+            if (randSpeed == 0) {
                 arrowType = getRandom(0, 4);
                 if (arrowType === 0) {
                     var up = {
@@ -380,16 +395,19 @@ function canvasApp() {
                     if ( arrows[i].x === upStartX && arrows[i].y < canvasHeight-upArrowH - hitboxOffset + perfectRange && arrows[i].y > canvasHeight -upArrowH - hitboxOffset - perfectRange){
                         score = "Perfect!";
                         arrows.splice(i,1);
+                        hitArrows++;
                         break
                     }
                     else if ( arrows[i].x === upStartX && arrows[i].y < canvasHeight-upArrowH - hitboxOffset + greatRange && arrows[i].y > canvasHeight -upArrowH - hitboxOffset - greatRange){
                         score = "Great!";
                         arrows.splice(i,1);
+                        hitArrows++;
                         break
                     }
                     else if ( arrows[i].x === upStartX && arrows[i].y < canvasHeight - upArrowH - hitboxOffset + goodRange && arrows[i].y > canvasHeight - upArrowH - hitboxOffset - goodRange){
                         score = "Good";
                         arrows.splice(i,1);
+                        hitArrows++;
                         break
                     }
                 }
@@ -399,16 +417,19 @@ function canvasApp() {
                     if ( arrows[i].x === downStartX && arrows[i].y < canvasHeight-downArrowH - hitboxOffset + perfectRange && arrows[i].y > canvasHeight -downArrowH - hitboxOffset - perfectRange){
                         score = "Perfect!";
                         arrows.splice(i,1);
+                        hitArrows++;
                         break
                     }
                     else if ( arrows[i].x === downStartX && arrows[i].y < canvasHeight-downArrowH - hitboxOffset + greatRange && arrows[i].y > canvasHeight -downArrowH - hitboxOffset - greatRange){
                         score = "Great!";
                         arrows.splice(i,1);
+                        hitArrows++;
                         break
                     }
                     else if ( arrows[i].x === downStartX && arrows[i].y < canvasHeight - downArrowH - hitboxOffset + goodRange && arrows[i].y > canvasHeight - downArrowH - hitboxOffset - goodRange){
                         score = "Good";
                         arrows.splice(i,1);
+                        hitArrows++;
                         break
                     }
                 }
@@ -419,16 +440,19 @@ function canvasApp() {
                     if ( arrows[i].x === rightStartX && arrows[i].y < canvasHeight-rightArrowH - hitboxOffset + perfectRange && arrows[i].y > canvasHeight -rightArrowH - hitboxOffset - perfectRange){
                         score = "Perfect!";
                         arrows.splice(i,1);
+                        hitArrows++;
                         break
                     }
                     else if ( arrows[i].x === rightStartX && arrows[i].y < canvasHeight-rightArrowH - hitboxOffset + greatRange && arrows[i].y > canvasHeight -rightArrowH - hitboxOffset - greatRange){
                         score = "Great!";
                         arrows.splice(i,1);
+                        hitArrows++;
                         break
                     }
                     else if ( arrows[i].x === rightStartX && arrows[i].y < canvasHeight - rightArrowH - hitboxOffset + goodRange && arrows[i].y > canvasHeight - rightArrowH - hitboxOffset - goodRange){
                         score = "Good";
                         arrows.splice(i,1);
+                        hitArrows++;
                         break
                     }
                 }
@@ -439,14 +463,17 @@ function canvasApp() {
                     if (arrows[i].x === leftStartX && arrows[i].y < canvasHeight - leftArrowH - hitboxOffset + perfectRange && arrows[i].y > canvasHeight - leftArrowH - hitboxOffset - perfectRange) {
                         score = "Perfect!";
                         arrows.splice(i, 1);
+                        hitArrows++;
                         break
                     } else if (arrows[i].x === leftStartX && arrows[i].y < canvasHeight - leftArrowH - hitboxOffset + greatRange && arrows[i].y > canvasHeight - leftArrowH - hitboxOffset - greatRange) {
                         score = "Great!";
                         arrows.splice(i, 1);
+                        hitArrows++;
                         break
                     } else if (arrows[i].x === leftStartX && arrows[i].y < canvasHeight - leftArrowH - hitboxOffset + goodRange && arrows[i].y > canvasHeight - leftArrowH - hitboxOffset - goodRange) {
                         score = "Good";
                         arrows.splice(i, 1);
+                        hitArrows++;
                         break
                     }
                 }
@@ -461,17 +488,6 @@ function canvasApp() {
         }
 
         //-----------------------------------------------------------
-        // draw the Neo Image in a new random location
-        function drawNeoImage() {
-
-            //set a random location
-            neo.x = getRandom(0, canvasWidth - neoImageW);
-            neo.y = getRandom(0, canvasHeight - neoImageH);
-
-            //draw the neo image
-            context.drawImage(images[neo.imgIndex], neo.x, neo.y, neo.w, neo.w);
-
-        } //drawNeoImage()
 
         /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
         /* Canvas Message and Image functions */
@@ -524,12 +540,12 @@ function canvasApp() {
         function writeStartScreen() {
 
             //build the frame counter message
-            var message = "Click Yeet To Beat My Meat";
+            var message = "Click To play";
 
             //write the frame counter on the canvas
             context.fillStyle = "white";
-            context.font = "30px Orbitron";
-            context.fillText(message, 200, 500);
+            context.font = "45px Orbitron";
+            context.fillText(message, 250, 500);
 
             //write the frame counter on the HTML page
             document.getElementById("documentMessage").innerHTML = message;
@@ -545,9 +561,10 @@ function canvasApp() {
 
             //clear the canvas
             clearCanvas();
+            arrows = [];
+            
 
             //draw the neo image at its last postion
-            context.drawImage(images[neo.imgIndex], neo.x, neo.y, neo.w, neo.w);
 
             //font color
             context.fillStyle = "white";
@@ -558,10 +575,12 @@ function canvasApp() {
             context.fillText(message, 125, 60);
 
             //message
-            var message = "Click to Try Again";
+            message = "Click to Try Again";
             context.font = "42px Orbitron";
             context.fillText(message, 100, 390);
-
+            
+            message = "Hit arrows: " + hitArrows;
+            context.fillText(message, 100, 590);
             //write the frame counter on the HTML page
             document.getElementById("documentMessage").innerHTML = message;
 
@@ -585,7 +604,6 @@ function canvasApp() {
             //3. draw any objects (the arrows)
             moveArrows();
             //draw the Neo image
-            // drawNeoImage();
 
 
             //--------------------------------------------
@@ -638,6 +656,7 @@ function canvasApp() {
 
             //reset the counters
             frameCounter = 0;
+            points = 1000;
 
         } // startGame()
 
@@ -646,8 +665,7 @@ function canvasApp() {
         function checkGameOver() {
 
             //if frameCounter is > stopInterval then the game is over
-            if (frameCounter > stopInterval) {
-
+            if (points<=0){
                 // game is over
                 gameOver = true;
 
@@ -675,9 +693,6 @@ function canvasApp() {
                 // if ( (frameCounter % soundInterval) == 0 ) {
                 //     playSciFiSound();
                 // }//if
-                if (Points <= 1) {
-                    GameOver = True;
-                }
                 //check if the game is over
                 checkGameOver();
 
