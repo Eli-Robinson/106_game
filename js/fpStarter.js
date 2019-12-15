@@ -184,7 +184,7 @@ function canvasApp() {
     //-----------------------------------------------------------
     /* Arrow variables */
     var arrows = [];
-    var createRate = 50;
+    var createRate = 100;
     var counter = 0;
     var arrowType = -1;
     var randSpeed;
@@ -294,28 +294,28 @@ function canvasApp() {
         function moveArrows() {
             //draws new arrows to canvas
             speed = 6;
-            randSpeed = getRandom(0,24);
-            if(frameCounter>1000){
-                randSpeed = getRandom(0,22);
+            randSpeed = getRandom(0,49);
+            if(frameCounter>750){
+                randSpeed = getRandom(0,34);
                 speed = 8;
             }
-            if(frameCounter>2000){
-                randSpeed = getRandom(0,20);
+            if(frameCounter>1500){
+                randSpeed = getRandom(0,24);
                 speed = 10;
             }
-            if(frameCounter>4000){
-                randSpeed = getRandom(0,18);
+            if(frameCounter>2500){
+                randSpeed = getRandom(0,19);
                 speed = 11;
             }
-            if(frameCounter>8000){
-                randSpeed = getRandom(0,16);
+            if(frameCounter>5000){
+                randSpeed = getRandom(0,14);
                 speed = 12
             }
-            if(frameCounter>15000){
-                randSpeed = getRandom(0,4);
+            if(frameCounter>7500){
+                randSpeed = getRandom(0,9);
                 speed = 15
             }
-            if(frameCounter>20000){
+            if(frameCounter>10000){
                 randSpeed = 0;
                 speed = 30;
             }
@@ -527,7 +527,6 @@ function canvasApp() {
             //write the frame counter on the canvas
             context.fillStyle = "white";
             context.font = "30px Orbitron";
-            context.fillText(message, 10, 50);
 
             //write the frame counter on the HTML page
             document.getElementById("documentMessage").innerHTML = message + "         " + message2 +"            " + message4 + " X" + message3 +" Combo";
@@ -572,15 +571,15 @@ function canvasApp() {
             //message
             message = "Game Over";
             context.font = "60px Orbitron";
-            context.fillText(message, 125, 60);
+            context.fillText(message, 220, 150);
 
             //message
             message = "Click to Try Again";
             context.font = "42px Orbitron";
-            context.fillText(message, 100, 390);
+            context.fillText(message, 195, 390);
             
             message = "Hit arrows: " + hitArrows;
-            context.fillText(message, 100, 590);
+            context.fillText(message, 240, 590);
             //write the frame counter on the HTML page
             document.getElementById("documentMessage").innerHTML = message;
 
@@ -657,6 +656,7 @@ function canvasApp() {
             //reset the counters
             frameCounter = 0;
             points = 1000;
+            hitArrows=0;
 
         } // startGame()
 
